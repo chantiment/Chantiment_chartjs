@@ -101,6 +101,7 @@ progress::-webkit-progress-value { background: #FF5300; }
 	width: 90%;
 	margin: 0 auto;
 	border-bottom: 2px solid #FF5300;
+	max-width: 1188px;
 }
 
 #chartContainer
@@ -111,6 +112,7 @@ progress::-webkit-progress-value { background: #FF5300; }
 	background-position: center .6em;
 
 	width: 90%;
+	max-width: 1188px;
 	margin: 0 auto;
 	margin-top: 1em;
 }
@@ -120,6 +122,7 @@ progress::-webkit-progress-value { background: #FF5300; }
 	width: 90%;
 	margin: 0 auto;
 	margin-top: 1em;
+	max-width: 1188px;
 }
 
 
@@ -232,6 +235,14 @@ form#dataForm
 		margin-top: 1%;
 		width: 100%;
 	}
+
+
+	#chartContainer
+	{
+		width: 90% !important;
+
+	}
+
 }
 
 @media only screen and (max-width: 600px) 
@@ -267,11 +278,46 @@ form#dataForm
 		margin-top: 1%;
 		width: 100%;
 	}
+
+	#chartContainer
+	{
+		width: 90% !important;
+
+	}
+
+
 }
-@media only screen and (max-width: 550px) { .inputosaurus-container{ 	width: 94% !important; }}
-@media only screen and (max-width: 500px) { .inputosaurus-container{   	width: 93% !important; }}
-@media only screen and (max-width: 400px) { .inputosaurus-container{   	width: 92% !important; }}
-@media only screen and (max-width: 350px) { .inputosaurus-container{   	width: 91% !important; }}
+@media only screen and (max-width: 550px) { 
+
+.inputosaurus-container{ 	width: 94% !important; }
+
+
+
+}
+@media only screen and (max-width: 500px) {
+
+ .inputosaurus-container{   	width: 93% !important; }
+
+
+
+
+}
+@media only screen and (max-width: 400px) {
+
+ .inputosaurus-container{   	width: 92% !important; }
+
+
+
+
+}
+@media only screen and (max-width: 350px) {
+
+ .inputosaurus-container{   	width: 91% !important; }
+
+
+
+
+}
 
 @media only screen and (max-width: 300px) 
 {
@@ -289,5 +335,17 @@ form#dataForm
     {
     	width: 90% !important;
     }
+
+
+
+
 }
-@media only screen and (max-width: 250px) { .inputosaurus-container{   	width: 87% !important; }}
+@media only screen and (max-width: 250px) { 
+
+.inputosaurus-container{   	width: 87% !important; }
+
+
+
+
+
+}

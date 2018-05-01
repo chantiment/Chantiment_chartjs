@@ -116,8 +116,10 @@ function ChantimentView()
 				}
 				else
 				{
-					dataSet.data.push( resultSet.mentions.total );
-					lastValue	= resultSet.mentions.total;
+					dataSet.data.push( resultSet.weighted_normalized );
+					lastValue	= resultSet.weighted_normalized;
+					//dataSet.data.push( resultSet.mentions.total );
+					//lastValue	= resultSet.mentions.total;
 				}
 			});
 			
