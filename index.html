@@ -1,22 +1,21 @@
 <html>
 <head>
-<title>Chantiment</title>
+<title>Chantiment - /biz/ sentiment & mentions Charts</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<meta name="description" content="CHANTIMENT"/>
-<meta name="keywords" content="CHANTIMENT"/>
-<meta name="robots" content="noindex, follow"/>
+<meta name="description" content="Chantiment indexes all posts made on 4chan /biz/ and creates charts. Enter any word, cryptocurrency or ICO in the terms field and find out how much its being talked about on 4chan /biz/."/>
+<meta name="keywords" content="cryptocurrency, sentiment, chantiment, 4chan, biz"/>
 <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=2">
 <meta name="format-detection" content="telephone=no">
 
-<meta property="og:title" content="CHANTIMENT" />
-<meta property="og:description" content="CHANTIMENT" />
+<meta property="og:title" content="Chantiment - /biz/ Charts" />
+<meta property="og:description" content="Chantiment indexes all posts made on 4chan /biz/ and creates charts. Enter any word, cryptocurrency or ICO in the terms field and find out how much its being talked about on 4chan /biz/." />
 <meta property="og:type" content="CHANTIMENT" />
-<meta property="og:url" content="CHANTIMENT" />
+<meta property="og:url" content="http://chantiment.com" />
 <meta property="og:site_name" content="CHANTIMENT" />
 
 <meta itemprop="name" content="CHANTIMENT"/>
-<meta itemprop="description" content="CHANTIMENT"/>
+<meta itemprop="description" content="Chantiment indexes all posts made on 4chan /biz/ and creates charts. Enter any word, cryptocurrency or ICO in the terms field and find out how much its being talked about on 4chan /biz/."/>
 
 <link rel="stylesheet" type="text/css" href="css/style.css?r=11s11" />
 <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.min.css" />
@@ -27,16 +26,16 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="js/inputosaurus-text-master/inputosaurus.js"></script>
-<script type="text/javascript" src="js/chantiment.View.js?r=1"></script>
+<script type="text/javascript" src="js/chantiment.View.js?r=24111"></script>
 </head>
 
 <body>
 <div id="topContainer">
-	<h2>Chantiment - Biz Charts</h2>
+	<h2>Chantiment - /biz/ Charts</h2>
 </div>
 
 <div id="dataContainer">
-	<div class="heading">Data Selection</div>
+	<div class="heading">Data</div>
 	
 	<form id="dataForm" action="">
 		<div class="formField">
@@ -74,7 +73,12 @@
 </div>
 
 <div id="chartContainer">
-	<canvas id="chartObj"></canvas>
+    <center><img id="wbclogo" src="https://images-ext-1.discordapp.net/external/L0ZUi80Ut8Lkq-V4imQpm27Jk9Tx9LMMTVSNfFyF8_4/http/watchbro.net/img/logo.png" style="
+    margin: 30px;
+    "></center>
+	<canvas id="chartObj" style="
+    height: 0px;
+"></canvas>
 	<progress id="animationProgress" max="1" value="0" style="width: 100%"></progress>
 </div>
 
@@ -84,8 +88,13 @@
 
 <div id="csvContainer">
 	<button id="exportCSV">CSV - Export</button>
+	<br>
+	<div class="heading">What is this?</div>
 	<span class="infoText">
-		Chantiment indexes all posts made on 4chan /biz/ and creates charts. <br>Enter any word, cryptocurrency or ICO in the terms field and find out how much its being talked about on 4chan /biz/.<br>Enter multiple to compare them.
+		Chantiment indexes all posts made on 4chan /biz/ and creates charts. <br>
+		Enter any word, cryptocurrency or ICO in the terms field and find out how much it's being talked about on 4chan /biz/.<br>
+		Enter multiple to compare them.<br>
+		<b>Chantiment is a <a href="http://watchbro.net/" target="_blank">watchbro</a> project.</b>
 	</span>
 </div>
 
@@ -110,6 +119,7 @@ $(function ()
 });
 </script>
 
+
 <script type="text/javascript">
 var sc_project=11700669; 
 var sc_invisible=1; 
@@ -121,5 +131,6 @@ src="https://www.statcounter.com/counter/counter.js"
 async></script>
 <noscript><div class="statcounter"><img class="statcounter"
 src="//c.statcounter.com/11700669/0/fcd30d15/1/" alt="."></div></noscript>
+
 </body>
 </html>
