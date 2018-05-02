@@ -1,5 +1,23 @@
 <html>
 <head>
+<title>Chantiment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<meta name="description" content="CHANTIMENT"/>
+<meta name="keywords" content="CHANTIMENT"/>
+<meta name="robots" content="noindex, follow"/>
+<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=2">
+<meta name="format-detection" content="telephone=no">
+
+<meta property="og:title" content="CHANTIMENT" />
+<meta property="og:description" content="CHANTIMENT" />
+<meta property="og:type" content="CHANTIMENT" />
+<meta property="og:url" content="CHANTIMENT" />
+<meta property="og:site_name" content="CHANTIMENT" />
+
+<meta itemprop="name" content="CHANTIMENT"/>
+<meta itemprop="description" content="CHANTIMENT"/>
+
 <link rel="stylesheet" type="text/css" href="css/style.css?r=11s11" />
 <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.min.css" />
 <link rel="stylesheet" type="text/css" href="js/inputosaurus-text-master/inputosaurus.css" />
@@ -55,14 +73,25 @@
 	</form>
 </div>
 
-<div id="chartContainer" >
+<div id="chartContainer">
 	<canvas id="chartObj"></canvas>
 	<progress id="animationProgress" max="1" value="0" style="width: 100%"></progress>
 </div>
 
+<div id="ratioContainer">
+
+</div>
+
 <div id="csvContainer">
 	<button id="exportCSV">CSV - Export</button>
+	<span class="infoText">
+		Chantiment indexes all posts made on 4chan /biz/ and creates charts. <br>Enter any word, cryptocurrency or ICO in the terms field and find out how much its being talked about on 4chan /biz/.<br>Enter multiple to compare them.
+	</span>
 </div>
+
+<footer>
+	<a href="http://ui1.chantiment.com/APIdocs.pdf" target="_blank">Chantiment API</a>
+</footer>
 
 <script type="text/javascript">
 var chantimentView;
@@ -80,5 +109,17 @@ $(function ()
 	chantimentView.callApi();
 });
 </script>
+
+<script type="text/javascript">
+var sc_project=11700669; 
+var sc_invisible=1; 
+var sc_security="fcd30d15"; 
+var sc_https=1; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><img class="statcounter"
+src="//c.statcounter.com/11700669/0/fcd30d15/1/" alt="."></div></noscript>
 </body>
 </html>

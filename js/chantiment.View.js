@@ -84,6 +84,7 @@ function ChantimentView()
 		var retArray			= new Array();
 		retArray['volumes']		= new Array();
 		retArray['dataset']		= new Array();
+		retArray['ratio']		= new Array();
 		
 		
 		$.each( apiData.volumes, function( index, element )
@@ -91,6 +92,7 @@ function ChantimentView()
 			//console.log( index, element );
 			retArray['volumes'].push( index ); 
 		});
+		//console.log( 'Volumes:', retArray['volumes'].length );
 		
 		$.each( apiData.terms, function( index, termWord )
 		{
@@ -102,7 +104,7 @@ function ChantimentView()
 			dataSet.data				= new Array();
 			
 			var lastValue				= 0;
-			
+			var cnt						= 0;
 			$.each( apiData.results[termWord], function( volume, resultSet )
 			{
 				//console.log( volume, resultSet.mentions.total );
@@ -113,17 +115,38 @@ function ChantimentView()
 						//console.log( 'Found missing value',   );
 						dataSet.data.push( lastValue );
 					}
+					else
+					{
+						dataSet.data.push( resultSet.weighted_normalized );
+					}
 				}
 				else
 				{
 					dataSet.data.push( resultSet.weighted_normalized );
 					lastValue	= resultSet.weighted_normalized;
+					cnt++;
 					//dataSet.data.push( resultSet.mentions.total );
 					//lastValue	= resultSet.mentions.total;
 				}
 			});
+			//console.log( 'Counter:', cnt );
 			
 			retArray['dataset'].push( dataSet );
+		});
+		
+		var ratioCnt	= 0;
+		$.each( apiData.ratio, function( index, ratioItm )
+		{
+			//console.log( index, ratioItm );
+			var tmpArr		= new Array();
+			tmpArr['term']	= index;
+			tmpArr['posts']	= ratioItm.posts;
+			tmpArr['ops']	= ratioItm.OPs;
+			tmpArr['avg']	= ratioItm.average;
+			tmpArr['color']	= that.borderColors[ratioCnt];
+			
+			retArray['ratio'].push( tmpArr ); 
+			ratioCnt++;
 		});
 		return retArray;
 	}
@@ -137,13 +160,18 @@ function ChantimentView()
 		if( this.canApiCall	== true  )
 		{
 			this.buildApiUrl();
+			//console.log( this.apiUrl );
 			if( this.apiUrl !== undefined )
 			{
+				// Set spinner on
+				$( '#chartContainer' ).addClass("spinner");
+				
 				//Call the api
 				$.getJSON( this.apiUrl, function( data )
 				{
 					// Set spinner off
-					$( '#chartContainer' ).css( "background-image", "none");
+					//$( '#chartContainer' ).css( "background-image", "none");
+					$( '#chartContainer' ).removeClass("spinner");
 					
 					// Format the response data for chart
 					var formattedData 	= that.formatApiData( data );
@@ -179,6 +207,7 @@ function ChantimentView()
 			                }
 					    }
 					});
+					that.setRatioInfo( formattedData['ratio'] );
 				});
 			}
 		}
@@ -232,6 +261,7 @@ function ChantimentView()
 			 )
 			{
 				//console.log( 'keydown', event.which );
+				that.calcDateDistances( $( '#datedistance' ).val() );
 				that.checkTermValueCount( false, function()
 				{
 					//console.log( event );
@@ -251,7 +281,7 @@ function ChantimentView()
 		{
 			event.preventDefault();
 			//console.log( 'terms add Click' );
-			
+			that.calcDateDistances( $( '#datedistance' ).val() );
 			that.checkTermValueCount( false, function()
 			{
 				var e = jQuery.Event("keydown");
@@ -301,16 +331,60 @@ function ChantimentView()
 		$( '#exportCSV' ).on( 'click touchend', function( event )
 		{
 			event.preventDefault();
-			//console.log( 'exportCSV Click' );
 			if( that.canApiCall	== true  )
 			{
 				that.buildApiUrl( "1" );
-				if( that.apiUrl !== undefined )
-				{
-					window.open( that.apiUrl, '_blank' );
-				}
+				//if( that.apiUrl !== undefined )
+				//{
+				//	window.open( that.apiUrl, '_blank' );
+				//}
+				that.callExportApi();
 			}
 		});
+	}
+	
+	
+	/**
+	 * Call the api for csv file content, and create a download file. 
+	 */
+	this.callExportApi			= function()
+	{
+		if( this.apiUrl !== undefined )
+		{
+			var apiExportUrl	= this.apiUrl;
+			apiExportUrl		= apiExportUrl.replace( this.apiUrlHost, "" );
+			//console.log( this.apiUrlHost, apiExportUrl );
+			
+			//Call the api
+			$.ajax(
+			{ 
+				url:this.apiUrlHost, 
+				data: apiExportUrl,
+				type: 'GET',
+				dataType: 'text',
+				crossDomain : true,
+				crossOrigin: true,
+				success: function(responseData, textStatus, jqXHR) 
+			    {
+					//console.log("Build csv file");
+					var filename	= "export_csv_" + that.terms + "_" + that.granularity + "_" + that.datestart + "_" + that.dateend + ".csv" ;
+					filename		= filename.replace('%2C', '-');
+					filename		= filename.replace(',', '-');
+					var csvUrl		= 'data:application/csv;charset=utf-8,' + encodeURIComponent(responseData);
+					$('body').append('<a id="csvexport"></a>')
+					$('#csvexport').attr(
+					{
+						'download': filename,
+						'href': csvUrl
+					});
+					$('#csvexport')[0].click();				
+			    },
+			    error: function (responseData, textStatus, errorThrown) 
+			    {
+			        console.warn(responseData, textStatus, errorThrown);
+			    }
+			});
+		}
 	}
 	
 	
@@ -355,6 +429,7 @@ function ChantimentView()
 			currentMonth		= ( currentMonth < 10 ) ? '0'+currentMonth: currentMonth;
 			var dateEnd			= currentdate.getFullYear() + '-' + currentMonth + '-' + currentDay;
 			$( '#dateend' ).val( dateEnd );
+			this.dateend		= dateEnd;
 			
 			if( value == '1year' )
 			{
@@ -368,6 +443,7 @@ function ChantimentView()
 				lastYearMonth		= ( lastYearMonth < 10 ) ? '0'+lastYearMonth: lastYearMonth;
 				var dateStart		= lastYear.getFullYear() + '-' + lastYearMonth + '-' + lastYearDay;
 				$( '#datestart' ).val( dateStart );
+				this.datestart		= dateStart;
 				//console.log( 'Last year', dateStart );
 			}
 			else if( value == '3months' )
@@ -382,6 +458,7 @@ function ChantimentView()
 				last3MonthsMonth		= ( last3MonthsMonth < 10 ) ? '0'+last3MonthsMonth: last3MonthsMonth;
 				var dateStart			= last3Months.getFullYear() + '-' + last3MonthsMonth + '-' + last3MonthsDay;
 				$( '#datestart' ).val( dateStart );
+				this.datestart		= dateStart;
 				//console.log( 'Last 3 months', dateStart );
 			}
 			else if( value == '1month' )
@@ -396,6 +473,7 @@ function ChantimentView()
 				lastMonthMonth		= ( lastMonthMonth < 10 ) ? '0'+lastMonthMonth: lastMonthMonth;
 				var dateStart		= lastMonth.getFullYear() + '-' + lastMonthMonth + '-' + lastMonthDay;
 				$( '#datestart' ).val( dateStart );
+				this.datestart		= dateStart;
 				//console.log( 'Last month', dateStart );
 			}
 		}
@@ -430,6 +508,7 @@ function ChantimentView()
 		else if( qs.terms !== "" )
 		{
 			this.terms 	= qs.terms;
+			this.setTitleTag();
 		}
 		
 		// Check granularity
@@ -447,7 +526,7 @@ function ChantimentView()
 		if( qs.datedistance !== "" )
 		{
 			this.datedistance 	= qs.datedistance;
-			that.calcDateDistances( this.datedistance );
+			this.calcDateDistances( this.datedistance );
 		}
 		else if( typeof qs.submitDataFlag !== 'undefined' )
 		{
@@ -476,6 +555,41 @@ function ChantimentView()
 			this.missingInput( '#dateend' );
 			this.canApiCall	= false;
 		}
+	}
+	
+	
+	/**
+	 * Change the content of the title tag in website for displaying the terms
+	 */
+	this.setTitleTag						= function()
+	{
+		// /biz/-mentions charts for [TERM1], [TERM2], [TERM3] -Chantiment
+		var title		= '/biz/-mentions charts for';
+		var termsArr	= this.terms.split(",");
+		$.each( termsArr, function( index, termWord )
+		{
+			title		= title + ' [' + termWord + ']';
+			if( (index+1) < termsArr.length )
+			{
+				title		= title + ',';
+			}
+		});
+		title			= title + '-Chantiment';
+		$( 'title' ).text( title );
+	}
+	
+	
+	this.setRatioInfo						= function( ratioArr )
+	{
+		var htmlOut			= '<span class="ratioHd">OP/post-ratio</span>';
+		
+		$.each( ratioArr, function( index, ratioItm ){
+			var title		= 'For every OP mentioning ['+ratioItm['term']+'] there are ' + ratioItm['avg'] + ' posts on average.';
+			var text		= '<span class="ratioInfo" style="color:'+ratioItm['color']+';" title="'+title+'">'+ratioItm['term']+': ' + ratioItm['ops'] + '/' + ratioItm['posts'] + '</span>';
+			htmlOut			= htmlOut + text;
+		});
+		
+		$('#ratioContainer').html( htmlOut );
 	}
 	
 	
